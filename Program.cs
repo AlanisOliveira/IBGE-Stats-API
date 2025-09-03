@@ -79,6 +79,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IPesquisaService, PesquisaService>();
 builder.Services.AddScoped<IIbgeApiService, IbgeApiService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFavoritosService, FavoritosService>();
 
 var app = builder.Build();
 
