@@ -1,0 +1,15 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+# User Secrets
+appsettings.Development.json
+appsettings.*.json
+
+# Visual Studio
+.vs/
