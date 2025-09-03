@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IbgeStats.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/")]
     public class HealthController : ControllerBase
     {
         [HttpGet]
