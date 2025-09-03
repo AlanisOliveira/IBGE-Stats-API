@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IbgeStats")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+79e5ff79bfc2d8479320aed67b11efaebaba749a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a6a89cc3aa574aebb6c49843a2eaf1c9dd6d3b69")]
 [assembly: System.Reflection.AssemblyProductAttribute("IbgeStats")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IbgeStats")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
