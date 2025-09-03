@@ -1,4 +1,5 @@
 using IbgeStats.Models;
+using IbgeStats.DTOs;
 using System.Text.Json;
 
 namespace IbgeStats.Services
@@ -7,7 +8,7 @@ namespace IbgeStats.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<IbgeApiService> _logger;
-        private const string IbgeBaseUrl = "https://servicodados.ibge.gov.br/api/v3/agregados";
+        private const string IbgeBaseUrl = "https://servicodados.ibge.gov.br/api/v1/pesquisas";
 
         public IbgeApiService(HttpClient httpClient, ILogger<IbgeApiService> logger)
         {
@@ -23,16 +24,16 @@ namespace IbgeStats.Services
                 response.EnsureSuccessStatusCode();
 
                 var jsonContent = await response.Content.ReadAsStringAsync();
-                var ibgeData = JsonSerializer.Deserialize<IbgeApiResponse[]>(jsonContent, new JsonSerializerOptions 
+                var ibgePesquisas = JsonSerializer.Deserialize<IbgePesquisaDto[]>(jsonContent, new JsonSerializerOptions 
                 { 
                     PropertyNameCaseInsensitive = true 
                 });
 
-                return ibgeData?.Select(data => new Pesquisa
+                return ibgePesquisas?.Select(dto => new Pesquisa
                 {
-                    Nome = data.Nome ?? "",
-                    Descricao = data.Nome ?? "",
-                    Contexto = data.Id?.ToString() ?? "",
+                    Nome = dto.Descricao,
+                    Descricao = dto.Observacao ?? dto.Descricao,
+                    Contexto = dto.Contexto,
                     Categoria = "Geral",
                     LastUpdated = DateTime.UtcNow,
                     CreatedAt = DateTime.UtcNow
@@ -53,18 +54,18 @@ namespace IbgeStats.Services
                 response.EnsureSuccessStatusCode();
 
                 var jsonContent = await response.Content.ReadAsStringAsync();
-                var ibgeData = JsonSerializer.Deserialize<IbgeApiResponse>(jsonContent, new JsonSerializerOptions 
+                var ibgePesquisa = JsonSerializer.Deserialize<IbgePesquisaDto>(jsonContent, new JsonSerializerOptions 
                 { 
                     PropertyNameCaseInsensitive = true 
                 });
 
-                if (ibgeData == null) return null;
+                if (ibgePesquisa == null) return null;
 
                 return new Pesquisa
                 {
-                    Nome = ibgeData.Nome ?? "",
-                    Descricao = ibgeData.Nome ?? "",
-                    Contexto = ibgeData.Id?.ToString() ?? "",
+                    Nome = ibgePesquisa.Descricao,
+                    Descricao = ibgePesquisa.Observacao ?? ibgePesquisa.Descricao,
+                    Contexto = ibgePesquisa.Contexto,
                     Categoria = "Geral",
                     LastUpdated = DateTime.UtcNow,
                     CreatedAt = DateTime.UtcNow
@@ -81,21 +82,21 @@ namespace IbgeStats.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{IbgeBaseUrl}/{pesquisaId}/variaveis");
+                var response = await _httpClient.GetAsync($"{IbgeBaseUrl}/{pesquisaId}/indicadores/0");
                 response.EnsureSuccessStatusCode();
 
                 var jsonContent = await response.Content.ReadAsStringAsync();
-                var indicators = JsonSerializer.Deserialize<IndicadorApiResponse[]>(jsonContent, new JsonSerializerOptions 
+                var indicadores = JsonSerializer.Deserialize<IbgeIndicadorDto[]>(jsonContent, new JsonSerializerOptions 
                 { 
                     PropertyNameCaseInsensitive = true 
                 });
 
-                return indicators?.Select(ind => new Indicador
+                return indicadores?.Select(dto => new Indicador
                 {
                     PesquisaId = pesquisaId,
-                    Nome = ind.Nome ?? "",
-                    Unidade = ind.Unidade ?? "",
-                    Descricao = ind.Nome ?? "",
+                    Nome = dto.Indicador,
+                    Unidade = dto.Unidade?.Sufixo ?? "",
+                    Descricao = dto.Indicador,
                     CreatedAt = DateTime.UtcNow
                 }) ?? new List<Indicador>();
             }
@@ -105,19 +106,5 @@ namespace IbgeStats.Services
                 return new List<Indicador>();
             }
         }
-    }
-
-    // DTOs para resposta da API do IBGE
-    public class IbgeApiResponse
-    {
-        public int? Id { get; set; }
-        public string? Nome { get; set; }
-    }
-
-    public class IndicadorApiResponse
-    {
-        public int? Id { get; set; }
-        public string? Nome { get; set; }
-        public string? Unidade { get; set; }
     }
 }
