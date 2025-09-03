@@ -31,9 +31,9 @@ namespace IbgeStats.Services
 
                 return ibgePesquisas?.Select(dto => new Pesquisa
                 {
-                    Nome = dto.Descricao,
-                    Descricao = dto.Observacao ?? dto.Descricao,
-                    Contexto = dto.Contexto,
+                    Nome = dto.Descricao ?? "Pesquisa IBGE",
+                    Descricao = dto.Observacao ?? dto.Descricao ?? "Pesquisa do IBGE",
+                    Contexto = dto.Contexto ?? "",
                     Categoria = "Geral",
                     LastUpdated = DateTime.UtcNow,
                     CreatedAt = DateTime.UtcNow
@@ -63,9 +63,9 @@ namespace IbgeStats.Services
 
                 return new Pesquisa
                 {
-                    Nome = ibgePesquisa.Descricao,
-                    Descricao = ibgePesquisa.Observacao ?? ibgePesquisa.Descricao,
-                    Contexto = ibgePesquisa.Contexto,
+                    Nome = ibgePesquisa.Descricao ?? "Pesquisa IBGE",
+                    Descricao = ibgePesquisa.Observacao ?? ibgePesquisa.Descricao ?? "Pesquisa do IBGE",
+                    Contexto = ibgePesquisa.Contexto ?? "",
                     Categoria = "Geral",
                     LastUpdated = DateTime.UtcNow,
                     CreatedAt = DateTime.UtcNow
