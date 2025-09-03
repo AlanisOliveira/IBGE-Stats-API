@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "5IUCSzTY7ZU=",
+  "dgSpecHash": "fwqMaRx4n48=",
   "success": true,
   "projectFilePath": "C:\\Users\\alani\\Downloads\\ObsidianVault\\desafios\\IBGE-Stats-API\\IbgeStats\\IbgeStats.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alani\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\alani\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\alani\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\alani\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\alani\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.8\\microsoft.aspnetcore.authentication.jwtbearer.8.0.8.nupkg.sha512",
     "C:\\Users\\alani\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.8\\microsoft.aspnetcore.openapi.8.0.8.nupkg.sha512",

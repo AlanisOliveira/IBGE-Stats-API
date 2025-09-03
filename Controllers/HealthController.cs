@@ -13,7 +13,7 @@ namespace IbgeStats.Controllers
             {
                 Status = "Healthy",
                 Timestamp = DateTime.UtcNow,
-                Message = "IBGE Stats API está funcionando!"
+                Message = "API funcionando!"
             });
         }
     }

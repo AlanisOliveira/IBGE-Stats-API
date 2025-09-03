@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using IbgeStats.Models;
 using IbgeStats.Services;
 using IbgeStats.DTOs;
@@ -53,6 +54,7 @@ namespace IbgeStats.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ApiResponseDto<PesquisaResponseDto>>> CreatePesquisa(CreatePesquisaDto createDto)
         {
             if (!ModelState.IsValid)
@@ -77,6 +79,7 @@ namespace IbgeStats.Controllers
         }
 
         [HttpGet("{id}/indicadores")]
+        [Authorize]
         public async Task<ActionResult<ApiResponseDto<IEnumerable<IndicadorResponseDto>>>> GetIndicadoresByPesquisa(int id)
         {
             var pesquisa = await _pesquisaService.GetPesquisaByIdAsync(id);
@@ -122,6 +125,7 @@ namespace IbgeStats.Controllers
         }
 
         [HttpPost("sync-ibge")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ApiResponseDto<object>>> SyncWithIbge()
         {
             var ibgePesquisas = await _ibgeApiService.FetchPesquisasFromIbgeAsync();

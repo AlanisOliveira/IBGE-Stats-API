@@ -139,3 +139,4 @@ C:\Users\alani\Downloads\ObsidianVault\desafios\IBGE-Stats-API\IbgeStats\obj\Deb
 C:\Users\alani\Downloads\ObsidianVault\desafios\IBGE-Stats-API\IbgeStats\obj\Debug\net8.0\IbgeStats.pdb
 C:\Users\alani\Downloads\ObsidianVault\desafios\IBGE-Stats-API\IbgeStats\obj\Debug\net8.0\IbgeStats.genruntimeconfig.cache
 C:\Users\alani\Downloads\ObsidianVault\desafios\IBGE-Stats-API\IbgeStats\obj\Debug\net8.0\ref\IbgeStats.dll
+C:\Users\alani\Downloads\ObsidianVault\desafios\IBGE-Stats-API\IbgeStats\bin\Debug\net8.0\BCrypt.Net-Next.dll
