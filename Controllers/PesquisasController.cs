@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using IbgeStats.Data;
 using IbgeStats.Models;
+using IbgeStats.Services;
 
 namespace IbgeStats.Controllers
 {
@@ -9,34 +8,27 @@ namespace IbgeStats.Controllers
     [Route("api/[controller]")]
     public class PesquisasController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IPesquisaService _pesquisaService;
+        private readonly IIbgeApiService _ibgeApiService;
 
-        public PesquisasController(AppDbContext context)
+        public PesquisasController(IPesquisaService pesquisaService, IIbgeApiService ibgeApiService)
         {
-            _context = context;
+            _pesquisaService = pesquisaService;
+            _ibgeApiService = ibgeApiService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pesquisa>>> GetPesquisas()
         {
-            var pesquisas = await _context.Pesquisas
-                .Include(p => p.Indicadores)
-                .Include(p => p.Periodos)
-                .Include(p => p.Stats)
-                .ToListAsync();
-
+            var pesquisas = await _pesquisaService.GetAllPesquisasAsync();
             return Ok(pesquisas);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Pesquisa>> GetPesquisa(int id)
         {
-            var pesquisa = await _context.Pesquisas
-                .Include(p => p.Indicadores)
-                .Include(p => p.Periodos)
-                .Include(p => p.Stats)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
+            var pesquisa = await _pesquisaService.GetPesquisaByIdAsync(id);
+            
             if (pesquisa == null)
             {
                 return NotFound();
@@ -45,13 +37,31 @@ namespace IbgeStats.Controllers
             return Ok(pesquisa);
         }
 
+        [HttpGet("categoria/{categoria}")]
+        public async Task<ActionResult<IEnumerable<Pesquisa>>> GetPesquisasByCategoria(string categoria)
+        {
+            var pesquisas = await _pesquisaService.GetPesquisasByCategoria(categoria);
+            return Ok(pesquisas);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Pesquisa>> CreatePesquisa(Pesquisa pesquisa)
         {
-            _context.Pesquisas.Add(pesquisa);
-            await _context.SaveChangesAsync();
+            var createdPesquisa = await _pesquisaService.CreatePesquisaAsync(pesquisa);
+            return CreatedAtAction(nameof(GetPesquisa), new { id = createdPesquisa.Id }, createdPesquisa);
+        }
 
-            return CreatedAtAction(nameof(GetPesquisa), new { id = pesquisa.Id }, pesquisa);
+        [HttpPost("sync-ibge")]
+        public async Task<ActionResult> SyncWithIbge()
+        {
+            var ibgePesquisas = await _ibgeApiService.FetchPesquisasFromIbgeAsync();
+            
+            foreach (var pesquisa in ibgePesquisas)
+            {
+                await _pesquisaService.CreatePesquisaAsync(pesquisa);
+            }
+
+            return Ok(new { message = $"Sincronizadas {ibgePesquisas.Count()} pesquisas do IBGE" });
         }
     }
 }
